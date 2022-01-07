@@ -1,15 +1,22 @@
 <template>
   <div class="app-wrapper">
     <div class="app">
+      <Navigation />
       <router-view />
+      <Footer />
     </div>
   </div>
 </template>
 
 <script>
+import Navigation from "./components/Navigation"
+import Footer from "./components/Footer"
 export default {
   name: "app",
-  components: {},
+  components: {
+    Navigation,
+    Footer,
+  },
   data() {
     return {};
   },
@@ -20,7 +27,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
 * {
@@ -51,4 +58,94 @@ export default {
 .link-light {
   color: #fff;
 }
+.arrow {
+  margin-left: 8px;
+  width: 12px;
+}
+.arrow path {
+  fill: #000;
+}
+.arrow-light path{
+  fill: #fff;
+}
+.blog-card-wrap {
+  position: relative;
+  padding: 80px 16px;
+  background-color: #f1f1f1;
+
+}
+.blog-card-wrap .blog-cards {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr;
+}
+button,
+.router-button {
+  transition: all 0.5s ease;
+  cursor: pointer;
+  margin-top: 24px;
+  padding: 12px 24px;
+  background-color: #303030;
+  color: #fff;
+  border-radius: 20px;
+  border-radius: 20px;
+  border: none;
+  text-transform: uppercase;
+}
+button,
+.router-button:focus {
+  outline: none;
+}
+button,
+.router-button:hover {
+  background-color: rgba(48, 48, 48, .7)
+}
+.button-ghost {
+  color: #000;
+  padding: 0;
+  border-radius: 0;
+  margin-top: 50px;
+  font-size: 15px;
+  font-weight: 500;
+  background: transparent;
+}
+.button-ghost i {
+  margin-left: 8px;
+}
+.button-light {
+  background-color: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+.button-inactive {
+  pointer-events: none !important;
+  cursor: none !important;
+  background-color: rgba(128, 128, 128, .5) !important;
+}
+@media (min-width: 700px) {
+  .button-ghost {
+    margin-top: 0;
+    margin-left: auto;
+  }
+}
+@media (min-width: 500px) {
+  .blog-card-wrap {
+    padding: 100px 16px;
+  }
+  .blog-card-wrap .blog-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 900px) {
+  .blog-card-wrap .blog-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 900px) {
+  .blog-card-wrap .blog-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 </style>

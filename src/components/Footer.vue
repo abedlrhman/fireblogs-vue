@@ -1,0 +1,162 @@
+<template>
+	<footer>
+		<div class="container">
+			<div class="left">
+				<div class="col-1">
+					<router-link class="header" :to="{name: 'Home'}">FireBlogs</router-link>
+					<ul>
+						<li>
+							<a href="#"><youTube class="svg-icon" /></a>
+						</li>
+						<li>
+							<a href="#"><twitter class="svg-icon"/></a>
+						</li>
+						<li>
+							<a href="#"><instagram class="svg-icon"/></a>
+						</li>
+						<li>
+							<a href="#"><linkedin class="svg-icon"/></a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-2">
+					<ul>
+						<router-link class="link" :to="{name: 'Home'}">Home</router-link>
+						<router-link class="link" :to="{name: 'blogs'}">Blogs</router-link>
+						<!-- <router-link v-if="user" class="link" :to="{name: 'newpost'}">Create post</router-link>
+						<router-link v-if="!user" class="link" :to="{name: 'login'}">Login / Register</router-link> -->
+					</ul>
+				</div>
+			</div>
+			<div class="right">
+				<p>Copyright 2022 All Rights Reserved received</p>
+			</div>
+		</div>
+	</footer>
+</template>
+
+<script>
+import youTube from "../assets/Icons/youtube-brands.svg"
+import twitter from "../assets/Icons/twitter-brands.svg"
+import instagram from "../assets/Icons/instagram-brands.svg"
+import linkedin from "../assets/Icons/linkedin-brands.svg"
+export default {
+	name: "footer-vue",
+	components: {
+		youTube,
+		twitter,
+		instagram,
+		linkedin,
+	}
+}
+</script>
+
+<style scoped>
+footer {
+	margin-top: auto;
+	padding: 100px 25px;
+	background-color: #303030;
+}
+footer .container {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+footer .container > div {
+	display: flex;
+	flex: 1;
+}
+footer .container .left {
+	gap: 32px;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+footer .container .left .header {
+	font-size: 24px;
+	color: #fff;
+	text-decoration: none;
+	font-weight: 600;
+	text-align: center;
+}
+.left ul {
+	gap: 16px;
+	list-style: none;
+	display: flex;
+}
+.left .col-1,
+.left .col-2 {
+	gap: 32px;
+	display: flex;
+	flex: 1;
+}
+.left .col-1 {
+	flex-direction: column;
+}
+.col-1 h2 {
+	text-align: center;
+}
+.col-1 ul {
+	margin-top: auto;
+}
+.col-1 ul li {
+	display: flex;
+	align-items: center;
+}
+.col-1 ul li .svg-icon {
+	width: 24px;
+	height: auto;
+	color: #fff;
+}
+.left .col-2 ul{
+	height: 100%;
+	justify-content: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.col-2 .link {
+	font-size: 16px;
+	font-weight: 500;
+	color: #fff;
+	text-decoration: none;
+}
+.right {
+	gap: 32px;
+	color: #fff;
+	align-items: center;
+	flex-direction: column;
+}
+p {
+	margin-top: auto;
+	font-size: 16px;
+}
+@media (min-width: 800px) {
+	footer .container {
+		flex-direction: row;
+		gap: 0;
+	}
+	footer .container .left {
+		flex-direction: row;	
+		align-items: initial;
+		gap: 0;
+	}
+	.left .col-1,
+	.left .col-2 {
+		gap: 0;
+	}
+	.col-1 h2 {
+		text-align: initial;
+	}
+	.left .col-2 ul {
+		flex-direction: column;	
+	}
+	.right {
+		align-items: flex-end;
+		gap: 0;
+	}
+	footer .container .left .header {
+		text-align: initial;
+	}
+}
+</style>
