@@ -1,16 +1,16 @@
 <template>
   <div class="home">
-    <BlogPost :post="welcomeScreen" />
-    <BlogPost :post="post" v-for="(post, index) in sampleBlogsPost" :key="index" />
+    <BlogPost :post="welcomeScreen" v-if="!user"/>
+    <BlogPost :post="post" v-for="(post, index) in blogPostsFeed" :key="index" />
     <div class="blog-card-wrap">
       <div class="container">
         <h3>View More Recent Blogs</h3>
         <div class="blog-cards">
-          <BlogCard :post="post" v-for="(post, index) in sampleBlogCards" :key="index" />
+          <BlogCard :post="post" v-for="(post, index) in blogPostsCards" :key="index" />
         </div>
       </div>
     </div>
-    <div class="updates">
+    <div class="updates" v-if="!user">
       <div class="container">
         <h2>never miss a post. Register for your free account today!</h2>
         <router-link class="router-button" to="#">
@@ -41,24 +41,18 @@ export default {
         welcomeScreen: true,
         photo: "coding"
       },
-      sampleBlogsPost: [
-        {
-          title: "This is a Filler Title",
-          blogHtml: "This is a Filler blog post title!",
-          blogCoverPhoto: "beautiful-stories",
-        },
-        {
-          title: "This is a Filler Title",
-          blogHtml: "This is a Filler blog post title!",
-          blogCoverPhoto: "designed-for-everyone",
-        },
-      ],
     }
   },
 	computed: {
-		sampleBlogCards() {
-			return this.$store.state.sampleBlogCards
-		}
+		blogPostsFeed() {
+			return this.$store.getters.blogPostsFeed;
+		},
+		blogPostsCards() {
+			return this.$store.getters.blogPostsCards;
+		},
+    user() {
+      return this.$store.state.user;
+    }
 	}
 };
 </script>

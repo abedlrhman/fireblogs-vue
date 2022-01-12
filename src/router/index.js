@@ -5,6 +5,11 @@ import Blogs from "../views/Blogs.vue";
 import Login from "../views/Login";
 import Register from "../views/Register";
 import ForgotPassword from "../views/ForgotPassword";
+import Profile from "../views/Profile";
+import Admin from "../views/Admin";
+import CreatePost from "../views/CreatePost";
+import BlogPreview from "../views/BlogPreview";
+import ViewBlog from "../views/ViewBlog";
 
 Vue.use(VueRouter);
 
@@ -47,6 +52,46 @@ const routes = [
     component: ForgotPassword,
     meta: {
       title: "Forgot Password"
+    },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+    meta: {
+      title: "profile"
+    },
+  },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
+    meta: {
+      title: "Admin"
+    },
+  },
+  {
+    path: "/createpost",
+    name: "CreatePost",
+    component: CreatePost,
+    meta: {
+      title: "Create Post"
+    },
+  },
+  {
+    path: "/post-preview",
+    name: "BlogPreview",
+    component: BlogPreview,
+    meta: {
+      title: "Preview Blog Post"
+    },
+  },
+  {
+    path: "/view-blog/:blogid",
+    name: "ViewBlog",
+    component: ViewBlog,
+    meta: {
+      title: "View Blog"
     },
   },
 ];

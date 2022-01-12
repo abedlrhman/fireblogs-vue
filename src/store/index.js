@@ -8,12 +8,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    sampleBlogCards: [
-      { blogTitle: "Blog CArd #1", blogCoverPhoto: "stock-1", blogDate: " 1 jan 2022"},
-      { blogTitle: "Blog CArd #2", blogCoverPhoto: "stock-2", blogDate: " 10 may 2021"},
-      { blogTitle: "Blog CArd #3", blogCoverPhoto: "stock-3", blogDate: " 17 dec 2012"},
-      { blogTitle: "Blog CArd #4", blogCoverPhoto: "stock-4", blogDate: " 15 oct 2019"},
-    ],
+    blogPosts: [],
+    postLoaded: null,
+    blogHTML: "Write your blog title here...",
+    blogTitle: "",
+    blogPhotoName: "",
+    blogPhotoFileURL: null,
+    blogPhotoPreview: null,
     editPosts: null,
     user: null,
     profileEmail: null,
@@ -24,7 +25,30 @@ export default new Vuex.Store({
     profileInitials: null,
 
   },
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);
+    },
+    blogPostsCards(state) {
+      return state.blogPosts.slice(0, 6);
+    }
+  },
   mutations: {
+    openPhotoPreview(state){
+      state.blogPhotoPreview = !state.blogPhotoPreview;
+    },
+    newBlogPost(state, payload) {
+      state.blogHTML = payload;
+    },
+    updateBlogTitle(state, payload) {
+      state.blogTitle = payload;
+    },
+    fileNameChange(state, payload) {
+      state.blogPhotoName = payload;
+    },
+    createFileURL(state, payload) {
+      state.blogPhotoFileURL = payload
+    },
     toggleEditPost(state, payload) {
       state.editPosts = payload;
     },
@@ -42,7 +66,16 @@ export default new Vuex.Store({
       state.profileInitials = 
         state.profileFirstName.match(/(\b\S)?/g).join("") +
         state.profileLastName.match(/(\b\S)?/g).join("")
-    }
+    },
+    changeFirstName(state, payload) {
+      state.profileFirstName = payload
+    },
+    changeLastName(state, payload) {
+      state.profileLastName = payload
+    },
+    changeUsername(state, payload) {
+      state.profileUsername = payload
+    },
   },
   actions: {
     async getCurrentUser({commit}) {
@@ -50,7 +83,34 @@ export default new Vuex.Store({
       const dbResult = await dataBase.get();
       commit("setProfileInfo", dbResult);
       commit("setProfileInitials")
-    }
+    },
+    async updateUserSettings({commit, state}) {
+      const dataBase = await db.collection("users").doc(state.profileId)
+      console.log(state.profileUsername)
+      await dataBase.update({
+        firstName: state.profileFirstName,
+        lastName: state.profileLastName,
+        username: state.profileUsername,
+      })
+      commit("setProfileInitials")
+    },
+    async getPost({ state }) {
+      const dataBase = await db.collection("blogPosts").orderBy('date', 'desc');
+      const dbResults = await dataBase.get();
+      dbResults.forEach(doc => {
+        if(!state.blogPosts.some(post => post.blogID === doc.id)) {
+          const data = {
+            blogID: doc.data().blogID,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date,
+          };
+          state.blogPosts.push(data);
+        }
+      });
+      state.postLoaded = true;
+    },
   },
   modules: {
   }

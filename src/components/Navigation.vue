@@ -8,9 +8,42 @@
 				<ul v-show="!mobile" >
 					<router-link class="link" :to="{ name : 'Home'}">Home</router-link>
 					<router-link class="link" :to="{name: 'Blogs'}">Blogs</router-link>
-					<router-link class="link" to="#">Create Post</router-link>
-					<router-link class="link" :to="{ name : 'Login'}">Login/Register</router-link>
+					<router-link class="link" :to="{name: 'CreatePost'}">Create Post</router-link>
+					<router-link v-if="!user" class="link" :to="{ name : 'Login'}">Login/Register</router-link>
 				</ul>
+				<div v-if="user" @click="toggleProfileMenu" class="profile" ref="profile">
+					<span>{{this.$store.state.profileInitials}}</span>
+					<div class="profile-menu" v-show="profileMenu">
+						<div class="info">
+							<p class="initials">{{ this.$store.state.profileInitials }}</p>
+							<div class="right">
+								<p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
+								<p>{{this.$store.state.profileUserName}}</p>
+								<p>{{this.$store.state.profileUserEmail}}</p>
+							</div>
+						</div>
+						<div class="options">
+							<div class="option">
+								<router-link class="option" :to="{name: 'Profile'}">
+									<userIcon class="icon" />
+									<p>Profile</p>
+								</router-link>
+							</div>
+							<div class="option">
+								<router-link class="option" :to="{name: 'Admin'}">
+									<adminIcon class="icon" />
+									<p>Admin</p>
+								</router-link>
+							</div>
+							<div @click="signOut" class="option">
+								<router-link class="option" to="#">
+									<signOutIcon class="icon" />
+									<p>Sign Out</p>
+								</router-link>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</nav>
 
@@ -20,8 +53,8 @@
 			<ul class="mobile-nav" v-show="mobileNav">
 				<router-link class="link" :to="{ name : 'Home'}">Home</router-link>
 				<router-link class="link" :to="{ name : 'Blogs'}">Blogs</router-link>
-				<router-link class="link" to="#">Create Post</router-link>
-				<router-link class="link" :to="{ name : 'Login'}">Login/Register</router-link>
+				<router-link class="link" :to="{name: 'CreatePost'}">Create Post</router-link>
+				<router-link v-if="!user" class="link" :to="{ name : 'Login'}">Login/Register</router-link>
 			</ul>
 		</transition>
 
@@ -29,14 +62,24 @@
 </template>
 
 <script>
-	import menuIcon from "../assets/Icons/bars-regular.svg"
+import menuIcon from "../assets/Icons/bars-regular.svg";
+import userIcon from "../assets/Icons/user-alt-light.svg";
+import adminIcon from "../assets/Icons/user-crown-light.svg";
+import signOutIcon from "../assets/Icons/sign-out-alt-regular.svg";
+import firebase from "firebase/app";
+import "firebase/auth"
+
 export default {
 	name: "Navigation",
 	components: {
 		menuIcon,
+		adminIcon,
+		signOutIcon,
+		userIcon,
 	},
 	data() {
 		return {
+			profileMenu: null,
 			mobile: null,
 			mobileNav: null,
 			windowWidth: null,
@@ -58,7 +101,21 @@ export default {
 		},
 		toggleMobileNav () {
 			this.mobileNav = !this.mobileNav;
-		}
+		},
+		toggleProfileMenu(e) {
+			if(e.target === this.$refs.profile) {
+				this.profileMenu = !this.profileMenu;
+			}
+		},
+		signOut() {
+			firebase.auth().signOut();
+			window.location.reload();
+		},
+	},
+	computed: {
+		user() {
+			return this.$store.state.user;
+		},
 	}
 }
 </script>
@@ -112,6 +169,94 @@ nav .branding .header {
 .nav-links ul .link:last-child {
 	margin-right: 0;
 }
+
+.nav-links .profile {
+	position: relative;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	color: #fff;
+	background-color: #303030;
+}
+
+.profile .profile-menu {
+	position: absolute;
+	min-width: 210px;
+	top: 60px;
+	right: 20%;
+	background-color: #303030;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+}
+
+.profile .profile-menu .info {
+	display: flex;
+	align-items: center;
+	padding: 15px;
+	border-bottom: 1px solid #fff;
+	gap: 10px;
+}
+
+.profile span {
+	pointer-events: none;
+}
+
+.info .initials{
+	position: initial;
+	width: 40px;
+	height: 40px;
+	background-color: #fff;
+	color: #303030;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+}
+
+.info .right {
+	flex: 1;
+	margin-left: 24px;
+
+}
+
+.info .right p:nth-child(1) {
+	font-size: 14px;
+}
+
+.info .right p:nth-child(2),
+.info .right p:nth-child(3) {
+	font-size: 12px;
+}
+
+.profile-menu .options {
+	padding: 15px;	
+}
+
+.profile-menu .options .option {
+	text-decoration: none;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.options .option .icon {
+	width: 18px;
+	height: auto;
+}
+
+.options .option p {
+	font-size: 14px;
+	margin-left: 12px;
+}
+
+.options .option:last-child {
+	margin-block: 0;
+}
+
 .menu-icon {
 	cursor: pointer;
 	position: absolute;

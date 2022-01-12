@@ -1,6 +1,6 @@
 <template>
   <div class="app-wrapper">
-    <div class="app">
+    <div class="app" v-if="this.$store.state.postLoaded">
       <Navigation v-show="navigation" />
       <router-view />
       <Footer />
@@ -32,6 +32,7 @@ export default {
       }
     } )
     this.checkRoute()
+    this.$store.dispatch("getPost");
   },
   mounted() {},
   methods: {
@@ -124,7 +125,7 @@ button,
 .router-button:focus {
   outline: none;
 }
-button,
+button:hover,
 .router-button:hover {
   background-color: rgba(48, 48, 48, .7)
 }
