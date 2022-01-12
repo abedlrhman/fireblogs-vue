@@ -21,7 +21,7 @@ export default {
 		this.currentBlog = await this.$store.state.blogPosts.filter(post => {
 			return post.blogID === this.$route.params.blogid;
 		});
-	}
+	},
 }
 </script>
 
